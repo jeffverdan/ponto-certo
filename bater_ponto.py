@@ -42,7 +42,6 @@ ERRO_SCREENSHOT = BASE_DIR / "erro_bater_ponto.png"
 TIMEOUT_VALIDACAO_FACIAL_MS = 60_000
 TIMEOUT_PADRAO_MS = 20_000
 
-
 def bater_ponto() -> None:
     if not is_dia_util():
         log("Hoje nao e dia util (fim de semana ou feriado). Nada a fazer.")
@@ -59,13 +58,24 @@ def bater_ponto() -> None:
         context = p.chromium.launch_persistent_context(
             user_data_dir=str(PROFILE_DIR),
             headless=False,
-            args=["--force-renderer-accessibility"],
+            args=[
+                "--force-renderer-accessibility"
+            ],
         )
         context.grant_permissions(["camera", "geolocation"], origin=URL)
         page = context.pages[0] if context.pages else context.new_page()
 
         try:
+            # TESTE DE VIDEO
+            # page = context.new_page()
+            # page.goto("https://webrtc.github.io/samples/src/content/getusermedia/gum/")
+            # page.wait_for_timeout(30000)
+            # return
+
+            
             page.goto(URL, wait_until="domcontentloaded")
+            # page.wait_for_timeout(30000)
+            # return
 
             # O Flit e Flutter Web: sem isso, nenhum botao/campo tem
             # texto/label de verdade no DOM e nenhum seletor abaixo

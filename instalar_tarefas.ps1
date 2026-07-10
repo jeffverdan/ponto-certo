@@ -41,6 +41,14 @@ function Criar-Tarefa {
     param($Nome, $Script, $Horario)
     $Acao = "`"$PythonExe`" `"$ProjectDir\$Script`""
     schtasks /create /tn "PontoCerto_$Nome" /tr $Acao /sc weekly /d $Dias /st $Horario /f | Out-Null
+
+    # Evita que a tarefa fique travada em "Em execucao" para sempre caso
+    # uma execucao anterior deixe processos orfaos do Chrome pendurados
+    # (o padrao "IgnoreNew" bloqueia inclusive o "Executar" manual).
+    $Tarefa = Get-ScheduledTask -TaskName "PontoCerto_$Nome"
+    $Tarefa.Settings.MultipleInstances = 'Parallel'
+    Set-ScheduledTask -InputObject $Tarefa | Out-Null
+
     Write-Host "Tarefa criada: PontoCerto_$Nome ($Horario)"
 }
 
