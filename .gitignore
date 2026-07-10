@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+storage_state.json
+chrome_profile/
+comprovantes/
+bater_ponto.log
+erro_*.png
+.env

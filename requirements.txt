@@ -1,0 +1,4 @@
+playwright>=1.44
+holidays>=0.50
+plyer>=2.1
+python-dotenv>=1.0
